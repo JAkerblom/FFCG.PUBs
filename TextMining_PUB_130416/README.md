@@ -1,23 +1,49 @@
-# Användning av detta subrepot
+# Analytics PUB den 13 april -16
+
+## Användning av detta subrepot
+
+Se [den här repot](https://github.com/benhamner/hillary-clinton-emails.git) för diverse scripts som använts på email-datan från grunden.
 
 ## Strukturen
 
 ```
 +-- data
 ¦   +-- original
-¦   ¦   +-- xx.data
-¦   ¦   +-- yy.csv
+¦   ¦   +-- Aliases.csv
+¦   ¦   +-- EmailReceivers.csv
+¦   ¦   +-- Emails.csv
+¦   ¦   +-- Persons.csv
+¦   ¦   +-- databases.sqlite
+¦   ¦   +-- hashes.txt
 ¦   +-- generated
-¦       +-- aa.csv
-+-- doc
+¦       +-- Candidates.json
+¦       +-- US_states.json
++-- scripts
+	+-- databases.sqlite.sql
 ```
 
 ## Datan
 
 Från [Kaggle.com/hillary-clinton-emails](https://www.kaggle.com/kaggle/hillary-clinton-emails) kan man få originaldata kring Hillary Clintons emails. Dessa är också upplagda här under `/data`.
 
-### Emails.csv
 
+### Aliases.csv
+
+```
+ - **Id** - unique identifier for internal reference
+ - **Alias** - text in the From/To email fields that refers to the person
+ - **PersonId** - person that the alias refers to
+```
+ 
+### EmailReceivers.csv
+
+```
+ - **Id** - unique identifier for internal reference
+ - **EmailId** - Id of the email
+ - **PersonId** - Id of the person that received the email
+```
+
+### Emails.csv
 ```
  - **Id** - unique identifier for internal reference
  - **DocNumber** - FOIA document number
@@ -49,23 +75,15 @@ Från [Kaggle.com/hillary-clinton-emails](https://www.kaggle.com/kaggle/hillary-c
  - **Id** - unique identifier for internal reference
  - **Name** - person's name
 ```
-
-### Aliases.csv
-
-```
- - **Id** - unique identifier for internal reference
- - **Alias** - text in the From/To email fields that refers to the person
- - **PersonId** - person that the alias refers to
-```
- 
-### EmailReceivers.csv
-
-```
- - **Id** - unique identifier for internal reference
- - **EmailId** - Id of the email
- - **PersonId** - Id of the person that received the email
-```
  
 ### database.sqlite
 
-Den här .sqlite-filen har alla tidigare nämnda filer.
+This SQLite database contains all of the above tables (Emails, Persons, Aliases, and EmailReceivers) with their corresponding fields. You can see the schema and ingest code under `scripts/databases.sqlite.sql`
+
+### Candidates.json
+
+This file is a string literal of both the main presidential candidates of the 2016 election and all of the democrats and republicans that have been potential candidates.
+
+### US_states.json
+
+This file is a string literal of all of the American states. Also includes abbreviations in case you want to match with geodata. The written name of the states are also included in Candidates.json as part of each candidate's state belonging. 
